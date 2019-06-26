@@ -1,0 +1,100 @@
+%Commandi utili ridefiniti
+
+\newcommand{\COURSE}{Programmazione concorrente e distribuita}
+
+\newcommand{\STUDENT}{Grigoras Valentin}
+\newcommand{\MATRICOLA}{1099561}
+\newcommand{\ANNO}{A.A 2018/2019}
+
+
+
+
+% ----------------------- TODO ---------------------------
+
+\documentclass[a4paper]{scrartcl}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+
+\usepackage{fancyhdr}
+\usepackage{color}
+
+\usepackage{lastpage}
+\usepackage{listings}
+\usepackage{tikz}
+
+\usepackage{subfigure}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{color}
+\usepackage{geometry}
+\usepackage{fancybox}
+
+\usepackage{charter}
+\usepackage{lipsum}
+\usepackage{amstext}
+\usepackage{xcolor}
+\usepackage{listingsutf8}
+\lstset{inputencoding=utf8/latin1}
+\definecolor{blue}{HTML}{007af7}
+\definecolor{red}{HTML}{920022}
+\definecolor{grey}{HTML}{fdfcf8}
+\definecolor{comment}{HTML}{1b9852}
+\definecolor{strings}{HTML}{5f283e}
+
+\definecolor{tipo}{RGB}{167, 63, 74}
+\definecolor{variabile}{RGB}{32, 114, 154}
+
+\lstset{language=Java,backgroundcolor=\color{grey}, commentstyle=\color{comment},identifierstyle  = \color{blue},extendedchars=true, frame=single,keepspaces=true, keywordstyle=\color{red},tabsize=3,showstringspaces=false,literate={é}{{\'{e}}}1, literate={è}{{\'{e}}}1 }
+
+
+\input kvmacros
+
+%Größe der Ränder setzen
+\geometry{a4paper,left=3cm, right=3cm, top=3cm, bottom=3cm}
+
+%Kopf- und Fußzeile
+\pagestyle {fancy}
+\fancyhead[L]{\COURSE}
+\fancyhead[C]{}
+\fancyhead[R]{\rightmark }
+
+\fancyfoot[L]{}
+\fancyfoot[C]{}
+\fancyfoot[R]{Pagina \thepage /\pageref*{LastPage}}
+
+%Formatierung der Überschrift, hier nichts ändern
+\def\header#1#2#3#4{
+\vspace*{\fill}
+  \begin{center}
+    { \Large Appunti di Programmazione Concorrente e Distribuita #1}\\ \vspace{10pt}
+    {(\ANNO #2)} \\  \vspace{10pt}
+{\Large \STUDENT#3} \\  \vspace{10pt}
+{\Large Matricola: \MATRICOLA #4} \\  \vspace{10pt}
+  \end{center}
+  \vspace*{\fill}
+}
+
+
+\begin{document}
+
+\header{}{}{}{}
+
+\pagebreak
+
+	\renewcommand{\contentsname}{Contenuti}
+	\renewcommand\tablename{new}
+	\tableofcontents \pagebreak
+	\listoffigures \pagebreak
+
+\vspace{30pt}
+\input{./content/equals}
+\input{./content/istanceof}
+\input{./content/tostring}
+\input{./content/classiwrapper}
+\input{./content/clone}
+
+
+
+\end{document}
