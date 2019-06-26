@@ -1,0 +1,14 @@
+\section{Operatore \textit{istanceof}}
+È un operatore che consente di determinare a run-time il tipo di un oggetto. Restituisce true o false a seconda che l'oggetto sia o no un'istanza della classe di confronto o di una delle sue superclassi. L'operatore si applica anche alle interfacce. Se un oggetto implementa un'interfaccia allora instanceof con il nome di quell'interfaccia restituisce true. La sintassi prevede la seguente dichiarazione:
+\begin{lstlisting}
+<riferimento> instanceof <tipo_riferimento>
+\end{lstlisting}
+Esempi:
+\begin{lstlisting}
+/*esempio 1*/
+if ("prova" instanceof String) ... // restituisce true 
+
+/*esempio 2*/
+Point pt = new Point(3,5); 
+if (pt instanceof String) ... // restituisce false 
+\end{lstlisting}

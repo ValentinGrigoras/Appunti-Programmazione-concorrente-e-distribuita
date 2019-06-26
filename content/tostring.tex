@@ -1,0 +1,33 @@
+\section{Il metodo String \textit{toString()}}
+Si tratta di un metodo che restituisce una rappresentazione dell'oggetto di invocazione in formato stringa. L'implementazione di default restituisce una stringa contenente il nome della classe e l'indirizzo di riferimento di invocazione:
+\begin{lstlisting}
+<classe>@<hashcode>
+\end{lstlisting}
+dove \textit{classe} è il nome della classe dell'oggetto su cui il metodo è invocato, e \textit{hashcode} è la rappresentazione esadecimale del codice hash dell'oggetto (indirizzo in memoria dell'oggetto). Questo accade perché la classe Object non può conoscere la struttura dell'oggetto.
+Invocazioni implicite del metodo \textit{toString} sono inoltre inserite dal compilatore in ogni contesto dove sia usato un riferimento e si richiede invece un valore di tipo String, ad esempio il codice:
+\begin{lstlisting}
+Data d = new Data();
+System.out.println(d);
+\end{lstlisting}
+è tradotto dal compilatore in \textit{System.out.println(d.toString());} chiamando cioè sul riferimento d il metodo toString() che traduce l'oggetto di tipo Data in una stringa, che può essere passata come parametro al metodo \textit{println}.
+
+\subsection{Costruzione stringhe}
+Dato il seguente codice :
+\begin{lstlisting}
+String nome= new String(''Roberto''); /*1*/
+String nome = ''Roberto''; /*2*/
+\end{lstlisting}
+è importante ricordare che l'operazione più efficiente a lungo andare è la seconda. Nel primo caso ho un reference èerché alloco nello heap un oggetto, nel secondo caso NON ho un reference e costruisco la stringa cheè costante e so dove si trova in memoria.
+
+\subsection{Concatenazione stringhe}
+Dato il seguente codice:
+\begin{lstlisting}
+String nomi = '' '';
+for(var p : people)
+nomi += p;
+
+var nomi= new StringBuilder('' '');
+for(var p : people)
+nomi.append(p);
+\end{lstlisting}
+è importante ricordare che il tipo String è immutabile e ogni volta che si fa il += viene allocata una nuova stringa, quindi chiamare += spesso causa un continuo ri-alloco di stringhe. Lo StringBuilderinvece viene allocato una volta sola (al momento di creazione, col new) e poi con l'append si aggiunge testo in coda senza le riallocazioni (come accadeva prima).

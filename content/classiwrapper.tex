@@ -1,0 +1,42 @@
+\section{Le classi wrapper}
+Sono dette \textbf{classi wrapper} (involucro) le classi che fanno da contenitore ad un tipo di dato primitivo, astraendo proprio il concetto di tipo primitivo.
+Le classi wrapper sono le seguenti: \textit{Byte}, \textit{Short}, \textit{Integer}, \textit{Long}, \textit{Float}, \textit{Double}, \textit{Booleab}, \textit{Character}, ognuna delle quali può contenere il relativo tipo primitvo.
+Tutte le class wrapper apparte la Boolean sono sottoclasssi di \textit{Number}
+Come la classe \textit{String}, anche le classi wrapper sono immutabili. Questo implica che un oggetto istanziato da una classe wrapper non potrà mai cambiare il suo valore interno tramite un suo metodo, anche perchè non esistono metodi setter. Quindi un oggetto istanziato cosi:
+\begin{lstlisting}
+Boolean b = new Boolean(true);
+\end{lstlisting}
+non conterrà mai il valore false.
+Le classi wrapper sono utili soprattutto nei casi in cui dobbiamo utilizzare un tipo di dato primitivo laddove è richiesto un oggetto:
+\begin{lstlisting}
+/*Errore! I tipi generici richiedono tipi parametro 
+solo complessi e non primitivi*/
+ArrayList<int> list = new ArrayList<>(); 
+
+/*sfrutta la regola dell'autoboxing-autounboxing*/
+ArrayList<Integer> list ) = new ArrayList<>(); 
+\end{lstlisting}
+\subsection{Autoboxing - Autounboxing}
+\textbf{Autoboxing}: conversione automatica (fatta dal compilatore) dei tipi primitivi nei rispettivi wrapper;
+\textbf{Autounboxing}: conversione automatica (fatta dal compilatore) dei tipi wrapper nei rispettivi tipi primitivi;
+
+Esempio:
+\begin{lstlisting}
+/* legale perche c è una coincidenza perfetta tra tipo 
+primitivo e wrapper*/
+Double d = 2.2; 
+
+Double d = 2;  /*illegale perchè 2 è intero*/
+\end{lstlisting}
+
+\subsection{Cose da evitare}
+Il seguente codice compila ma è inefficiente:
+\begin{lstlisting}
+Long sum = 0L;
+var max = Integer.MAX_VALUE;
+for(long i = 0; i < max; ++i)
+	sum += i;
+\end{lstlisting}
+Il tipo di sum è Long, ovvrero un wrapper di long. Nel for invece ho longche è un tipo primitivo e quindi la chiamata a sum += i;effettua il boxing del tipo, quindi crea conversioni di continuo che impattano sulla performance del programma. 
+
+Soluzione: usare long sum;.
