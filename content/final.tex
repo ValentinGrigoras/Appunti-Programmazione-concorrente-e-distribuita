@@ -1,0 +1,83 @@
+\section{La keyword \textit{final}}
+La keyword \textit{final} si può utilizzare in contesti diversi ma in generale identifica qualcosa di costante o immutabile.
+Il reference this, che in un metodo non statico si riferisce all'oggetto di invocazione è sempre implicitamente \textit{final}, ovvero non modificabile. Invece l'oggetto a cui this si riferisce è modificabile:
+\begin{lstlisting}
+public class C {
+	public int x;
+	public void metodo(){
+		this = new C(); /* ILLEGALE: cannot assign a 
+		value to final variable this*/
+		this.x = 10; //ok
+	}
+}
+\end{lstlisting}
+
+\subsection{Campi dati final}
+Un campo dati statico o no marcato \textit{final} è un campo costante / immutabile, quindi ad ogni tentativo di modifica il compilatore segna un errore.
+I campi dati marcati final devono essere sempre marcati esplicitamente, non basta l'inizializzazione automatica:
+\begin{lstlisting}
+public class E {
+final int i; // ILLEGALE
+}
+public class E {
+static final int k; // ILLEGALE
+static final int v=0; //ok
+}
+public class E {
+final int i;
+E(){i=0;} // ok
+}
+public class E {
+final int i;
+E(){i=0; i=2;} /* ILLEGALE, non posso modificare
+il valore di i dopo avergli assegnato 0*/
+}
+\end{lstlisting}
+Se un riferimento \textit{ref} viene marcato \textit{final}, allora ref si riferisce ad uno ed un solo oggetto fissato, ma il contenuto dell'oggetto puntato può essere modificato. Java non fornisce un modo per rendere costanti gli oggetti:
+\begin{lstlisting}
+class Z{
+	int i=2;
+}
+
+public class D{
+	Z z1 = new Z();
+	final Z z2 = new Z();
+	static final Z z3 = new Z();
+	final int[] a = {1, 2, 3, 4, 5};
+
+	public static void main(String[] args){
+	D d1 = new D();
+	d1.z2.i++; //ok
+	d1.z1 = new Z();
+	for(int i = 0; i < d1.a.lenght; i++){
+	d1.a[i]++; /* ok, solamente il reference a è costante
+	d1.z2 = new Z(); ILLEGALE, z2 è final
+	D.z3 = new Z(); ILLEGALE, z3 è final
+	d1.a = new int[3]; ILLEGALE, a è final
+	}
+  } 
+}
+\end{lstlisting}
+
+\subsection{Metodi \textit{final}}
+Un metodo marcato come \textit{final} indica che tale metodo non può essere ridefinito in eventuali sottoclassi.
+I motivi per marcare un metodo final sono:
+\begin{itemize}
+	\item \textbf{Sicurezza}: si può pensare che un metodo \textit{boolean validatePassword()} può essere marcato final per evitare evenutali ridefinizioni maliziose;
+	\item \textbf{Efficienza};
+	\item \textbf{Progettuali}: a volte si desidera mettere un blocco sul metodo per evitare che una sottoclasse cambi comportamento.
+\end{itemize}
+
+\begin{lstlisting}
+public class Classe{
+    //attributi
+    public final void MetodoNonRidefinibile(){
+        //codice del metodo non ridefinibile
+    }
+    //codice
+}
+\end{lstlisting}
+
+\subsection{Classi \textit{final}}
+Marcare una classe C come final significa che non possono essere definiti sottoclassi di C. Naturalmente, tutti i metodi di una classe final sono implicitamente final, mentre i campi dati possono o meno essere marcati final.
+Si noti che marcare una classe final si opera una notevole restrizione a suo utilizzo in quanto non sarebbe permesso l'estendibilità di quella classe.
