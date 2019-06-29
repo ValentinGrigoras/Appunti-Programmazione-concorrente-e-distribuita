@@ -1,0 +1,66 @@
+\section{La keyword \textit{abstract}}
+\subsection{Metodi astratti}
+È possibile definire dei metodi astratti all'interno delle classi astratte. Tali metodi, dovranno essere necessariamente ridefiniti (tramite override) nelle classi figlie. 
+
+Un metodo astratto non può essere invocato in quanto non è definito, ma potrà essere soggetto a riscrittura( override ) in una sottoclasse.
+\begin{lstlisting}
+public abstract void Metodo();
+\end{lstlisting}
+\subsection{Le classi astratte}
+In java una classe può essere dichiarata astratta usando il modificatore \textit{abstract}. 
+
+Una classe astratta è una classe \textit{incompleta}, perchè contiene dei metodi astratti, cioè metodi d'istanza senza una corrispondente implementazione.
+
+Data una astratta \textit{AbstractC} non posso creare istanze di quella classe tramite \textit{new AbstractC()}, perchè il loro comportamento non sarebbe determinato nel caso si invocasse su di esse un metodo astratto.
+\begin{lstlisting}
+public abstract class A {
+double campoDati1;
+/*una classe che contiene almeno un metodo astratto
+dev'essere marcata abstract*/
+	public abstract void metodo(); 
+}
+\end{lstlisting}
+Una classe astratta può dichiarare dei campi (che ne descrivono lo stato) e dei metodi (non astratti) che ne specificano il funzionamento, oppure delle interfacce.
+
+\textbf{Lo scopo} e l’utilità delle classi astratte è di gestire il comportamento di base delle classi che la derivano e che può essere ampliato e specializzato da queste ultime.
+E' possibile avere dei costruttori astratti soprattutto quando ci sono dei campi dati nella classe,
+
+Una \textit{classe concreta} che estende una classe astratta deve necessariamente implementare tutti i metodi astratti della superclasse, altrimenti il compilatore segnalerà un errore.
+
+Se una classe concreta estende una classe abstract e in più è marcata abstract, allora tale sottoclasse è considerata una classe astratta.
+Esempio:
+\begin{lstlisting}
+public abstract class A {
+	private int a;
+	public A(int x) {a=x;}
+	public abstract int m(); 
+	}
+
+public class C extends A { // C e' una concretizzazione di A
+	private int b;
+	public int m() {return 4;} // implementazione di m()
+	public C() {super(8); b=0;} // OK//
+	public C(int x){}// ILLEGALE: No constructor matching A() 
+	//found in class A
+	public static void main(String args[]) { 
+	 // A r = new A(9); //ILLEGALE: Abstract class A can't be 
+	 //instantiated
+	 A s = new C(); // OK
+	 }  
+	}
+\end{lstlisting}
+
+\subsection{Cose permesse vs cose non permesse}
+\textbf{Non permesso}:
+\begin{itemize}
+	\item Non è possibile avere metodi statici astratti, altrimenti potrebbero essere invocati tramite il nome della classe senza istanziare un oggetto di quella classe astratta;
+	\item Non è possibile avere un metodo finalastratto: sarebbe un \textit{no sense};
+	\item Non si possono creare oggetti di classi astratte;
+\end{itemize}
+
+\textbf{Permesso}:
+\begin{itemize}
+	\item E’ possibile dichiarare un reference il cui tipo (statico) è una classe astratta A: il tipo dinamico di un tale reference dovrà quindi essere una sottoclasse concreta di A. Quindi una classe astratta può essere solamente un tipo statico, mai un tipo dinamico;
+	\item E` possibile definire una classe astratta ma senza alcun metodo astratto. E’ anche possibile marcare astratta una classe che non definisce dei metodi (solo stato);
+	\item In una classe astratta ci possono essere dei metodi implementati che invocano metodi astratti: a run-time verrà sempre invocato virtualmente l'opportuno metodo concreto
+\end{itemize}

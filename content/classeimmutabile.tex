@@ -1,0 +1,254 @@
+\section{Classe immutabile}
+Una classe è \textit{immutabile} se lo stato di un oggetto di quella classe (detto anche oggetto immutabile) non può essere modificato dopo che è stato creato.
+Per esempio \textit{String} è una classe immutabile e una volta istanziata con il suo valore non cambia più.
+
+Prima infatti abbiamo visto che la concatenazione col += di stringhe non è molto efficiente perché le stringhe, essendo immutabili,non si possono modificare e quindi il += crea una nuova stringa ogni volta.
+
+Una classe immutabile generalmente si crea se non ha alcun membro esposto e non ha alcun setter; diciamo che è in “read only mode” e quindi in quanto tale è anche thread safe. Più avanti vedremo che i problemi avvengono quando più processi vogliono simultaneamente scrivere su una risorsa condivisa ma se tale risorsa è di sola lettura, ognuno può leggere quando vuole e quanto vuole. 
+
+\begin{lstlisting}
+public final class Immutable {
+    private final int value;
+    public Immutable(int value) {
+        this.value = value;
+    }
+    public int getValue() {
+        return value;
+    }
+}
+\end{lstlisting}
+
+\subsection{Regole per creare una classe immutabile}
+\begin{enumerate}
+	\item Non fornire alcun \textit{mutatore} tipo setter;
+	\item Rendere la classe \textit{final} o comunque impedire l’estensione al di fuori del package di appartenenza;
+	\item Rendere tutti i campi dati e i metodi \textit{final};
+	\item Mettere tutti i campi dati \textit{privati};
+	\item Ogni variabile membro che fa riferimento a oggetti mutabili (come ad esempio array, collezioni o la classe java.util.Date):
+		\begin{itemize}
+			\item va resa privata;
+			\item non deve mai essere restituita all’esterno se non attraverso una sua copia;
+			\item deve avere reference solo all’interno della classe; quindi nel caso in cui la variabile membro sia inizializzata nel costruttore con un oggetto mutabile, va memorizza una copia dell’oggetto al posto dell’oggetto originale;
+			\item non deve essere variata dopo la costruzione dell’oggetto.
+		\end{itemize}
+\end{enumerate}
+
+\subsection{Esempio pratico}
+Esempio di classe mutabile:
+\begin{lstlisting}
+package it.cosenonjaviste.classiimmutabili.mutabile;
+ 
+import java.text.DecimalFormat;
+import java.util.EnumSet;
+import java.util.Set;
+ 
+public class Pizza {
+ 
+  public enum Formato {
+    NORMALE, BABY, MAXI, CALZONE;
+  }
+ 
+  public enum Ingrediente {
+    PROSCIUTTO, FUNGHI, PATATE, SALSICCIA, CARCIOFI, SPECK;
+  }
+ 
+  protected Formato formato;
+  protected Set ingredienti = EnumSet.noneOf(Ingrediente.class);
+ 
+  public Formato getFormato() {
+    return formato;
+  }
+ 
+  public void setFormato(Formato formato) {
+    this.formato = formato;
+  }
+ 
+  public void aggiungiIngrediente(Ingrediente i) {
+    ingredienti.add(i);
+  }
+ 
+  public void rimuoviIngrediente(Ingrediente i) {
+    ingredienti.add(i);
+  }
+ 
+  public Set getIngredienti() {
+    return ingredienti;
+  }
+ 
+  public double getPrezzo() {
+    double prezzo = 0.0;
+    switch (formato) {
+    case BABY:
+      prezzo += 2.0;
+      break;
+    case NORMALE:
+    case CALZONE:
+      prezzo += 4.0;
+      break;
+    case MAXI:
+      prezzo += 7.0;
+      break;
+    }
+    prezzo += ingredienti.size() * 1.0;
+    return prezzo;
+  }
+ 
+  public String toString() {
+    return formato + " " + ingredienti + " " + 
+    new DecimalFormat("#,##").format(getPrezzo());
+  }
+ 
+}
+
+/*nel main*/
+Pizza prosciutto = new Pizza();
+Pizzeria.pizze.add(prosciutto);
+prosciutto.setFormato(Formato.CALZONE);
+prosciutto.aggiungiIngrediente(Ingrediente.PROSCIUTTO);
+System.out.println("Ho segnato l'ordine di " + prosciutto);
+\end{lstlisting}
+La stessa classe in versione immutabile:
+\begin{lstlisting}
+public final class Pizza {
+ 
+  public static final Pizza MARGHERITA = 
+  	new Pizza(Formato.NORMALE, EnumSet.noneOf(Ingrediente.class));
+  public static final Pizza PROSCIUTTO = 
+  	new Pizza(Formato.NORMALE, EnumSet.of(Ingrediente.PROSCIUTTO));
+  public static final Pizza CALZONE_PROSCIUTTO = 
+  	new Pizza(Formato.CALZONE, EnumSet.of(Ingrediente.PROSCIUTTO));
+ 
+  public enum Formato {
+    NORMALE, BABY, MAXI, CALZONE
+  }
+ 
+  public enum Ingrediente {
+    PROSCIUTTO, FUNGHI, PATATE, SALSICCIA, CARCIOFI, SPECK
+  }
+ 
+  private final Formato formato;
+  private final Set<Ingrediente> ingredienti;
+  private Double prezzo;
+  private String toString;
+ 
+  public Formato getFormato() {
+    return formato;
+  }
+ 
+  public Set<Ingrediente> getIngredienti() {
+    return EnumSet.copyOf(ingredienti);
+  }
+ 
+  public Pizza(Formato formato, Set<Ingrediente> ingredienti) {
+    this.formato = formato;
+    this.ingredienti = EnumSet.copyOf(ingredienti);
+  }
+ 
+  public double getPrezzo() {
+    if (prezzo == null) {
+      prezzo = 0.0;
+      switch (formato) {
+      case BABY:
+        prezzo += 2.0;
+        break;
+      case NORMALE:
+      case CALZONE:
+        prezzo += 4.0;
+        break;
+      case MAXI:
+        prezzo += 7.0;
+        break;
+      }
+      prezzo += ingredienti.size() * 1.0;
+    }
+    return prezzo;
+  }
+ 
+  public String toString() {
+    if (toString == null) {
+      toString = formato + " " + ingredienti + " " +
+       new DecimalFormat("#,##").format(getPrezzo());
+    }
+    return toString;
+  }
+\end{lstlisting}
+
+Esempio sbagliato:
+\begin{lstlisting}
+public class MyDateTime{
+	private Date dateTime;
+	private TimeZome tz;
+
+	public MyDateTime(Date dateTime, TimeZone tz){
+		this.dateTime = dateTime;
+		this.tz = tz;
+	}
+
+	public Date getDateTime() {return dateTime;}
+}
+\end{lstlisting}
+Non va bene qua perché sto inizializzando due classi (dateTime e tz) semplicemente facendo una copia di reference; non sto facendo una copia profonda ma sto solo copiando il puntatore. Inoltre sto ritornando una reference ad un campo oggetto privato della classe! In realtà, già solo con il costruttore sono in pericolo perché mi basta modificare l’oggetto da fuori la classe per modificarlo anche dentro dato che non ho fatto una copia profonda.
+\subsection{Vantaggi}
+\begin{itemize}
+	\item Nessun thread può corrompere lo stato interno di una classe immutabile;
+	\item  Le classi immutabili siano più semplici da programmare poiché le loro istanze possono assumere uno e un solo stato che viene mantenuto dalla costruzione in poi. 
+\end{itemize}
+
+\subsection{Svantaggi}
+\begin{itemize}
+	\item Dato che un oggetto immutabile non può essere variato, se si vuole effettuare una modifica sarà necessario costruire un nuovo oggetto che differisce dal primo solo per la variazione voluta;
+\end{itemize}
+
+\subsection{Differenza tra classe immutabile e oggetto immutabile}
+Una \textbf{classe immutabile} genera oggetti immutabili per definizione, mentre un \textbf{oggetto immutabile} non necessariamente è instanziato da una classe anch’essa immutabile.
+Esempi di oggetti immutabili:
+\begin{lstlisting}
+public final class Immutable2 {
+    
+        private final String text;
+    
+        public Immutable2(String text) {
+            this.text = text;
+        }
+    
+        public String getText() {
+            return this.text;
+        }
+    }	
+\end{lstlisting}
+
+\begin{lstlisting}
+public final class Immutable3 {
+    
+        private final String text;
+    
+        private Immutable3(String text) {
+            this.text = text;
+        }
+    
+        public String getText() {
+            return this.text;
+        }
+    
+        public static Immutable3 create(String text) {
+            return new Immutable3(text);
+        }
+    }	
+\end{lstlisting}
+
+\subsection{Regole per creare oggetti immutabili}
+\begin{enumerate}
+	\item Tutte le proprietà devono essere settabili nel costrutture o in un metodo statico di init (vedi create sopra);
+	\item Nessun setter, se necessari per qualche motivo dovrebbero sollevare un eccezione;
+	\item tutte le proprietà devono essere marcate private e final;
+	\item La classe deve essere marcata final;
+	\item Caso in cui si riferenzi oggetti mutabili: usare deep copy per passare i valori al costruttore e per leggerli attraverso metodi di getter.
+	\end{enumerate}
+
+\subsection{Perchè la classe \textit{String} è immutabile}
+\begin{itemize}
+	\item \textbf{Sicurezza}: i parametri sono in genere rappresentati come String nelle connessioni di rete, url di connessione al database, nomi utente / password ecc. Se fosse mutabile, questi parametri potrebbero essere facilmente modificati;
+	\item \textbf{Sincronizzazione e concorrenza}: rendere String immutable li rende automaticamente thread-safe, risolvendo così i problemi di sincronizzazione;
+	\item \textbf{Caching}: quando il compilatore ottimizza gli oggetti String, vede che se due oggetti hanno lo stesso valore (a = "test" e b = "test") e quindi è necessario un solo oggetto stringa (per entrambi aeb, questi due punti allo stesso oggetto);
+	\item \textbf{Caricamento della classe}: String viene utilizzato come argomento per il caricamento della classe. Se mutabile, potrebbe causare il caricamento di una classe errata (perché gli oggetti mutabili cambiano il loro stato);
+	\end{itemize}
