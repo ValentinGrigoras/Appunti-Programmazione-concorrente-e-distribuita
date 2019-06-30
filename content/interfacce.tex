@@ -1,0 +1,156 @@
+\section{Interfacce}
+ Le interfacce possono essere intese come un'evoluzione delle classi astratte e permettono, di fatto, di simulare l'ereditarietà multipla.
+ \subsection{Pre Java 8}
+ Sino a Java 7 un'interfaccia per definizione poteva possedere solo metodi dichiarati \textit{public} e \textit{abstract} e variabili dichiarate \textit{public}, \textit{static}, \textit{final}.
+ Esempio di interfaccia:
+ \begin{lstlisting}
+public interface Saluto{
+	public static final String CIAO = "Ciao";
+	public static final String BUONGIORNO = "Buongiorno";
+
+	public abstract void saluta();
+
+}
+ \end{lstlisting}
+Ommettendo i modificatori, il programma funziona comunque in quanto vengono aggiunti automaticamente da Java. Viene aggiunto \textit{public abstract} per i metodi e \textit{public static final} per le variabili.
+
+Non posso dichiarare i modificatori \textit{private, protected}.
+
+\subsubsection{La dichiarazione di interfacce}
+Un dichiarazione di interfaccia crea un nuovo tipo riferimento che avrà come istanze tutte le istanze delle classi che implementano l'interfaccia.
+
+La definizione di un'interfaccia avviene tramite parla chiave \textbf{interface}. Un'interfaccia può contenere solo dichiarazioni di classi, interfacce, costanti e metodi astatti.
+Si possono usare i seguenti modificatori:
+\begin{itemize}
+	\item \textbf{Abstract}: ogni interfaccia è implicitamente astratta;
+	\item \textbf{Public}: tutti i membri di un'interfaccia sono dichiarati implicitamente come public;
+	\item \textbf{Static}: le classi membro, le interfacce membro e i campi sono dichiarati implicitamente static;
+	\item \textbf{Protected} e \textbf{Private}: si applica solo a interfacce membro a una dichiarazione di classe;
+	\item \textbf{Final}: i campi sono implicitamente final, cioè definiscono delle costanti.
+	\end{itemize}
+
+Un'interfaccia non può estendere una classe ma può estendere una o più interfacce dette \textit{superinterfacce}. ereditando i suoi metodi.
+
+La differenza tra implementare un'interfaccia ed estendere una classe, consiste nel fatto che possiamo estendere una sola classe alla volta. Possiamo invece implementare un numero indefinito di interfacce simulando l'ereditarietà multipla.
+
+Riassumendo quindi una classe può implementare un'interfaccia e un'interfaccia può estendere un'altra interfaccia.
+
+\subsection{Post Java 8}
+\subsubsection{Metodi statici}
+Dalla versione 8 di Java in poi è possibile definire all'interno delle interfacce anche \textbf{metodi statici}.
+\begin{lstlisting}
+public interface MyInterface{
+	static void metodoStatico(){
+	System.out.println("Metodo Statico Chiamato!");
+	}
+}
+\end{lstlisting}
+È possibile chiamare i metodi statici direttamente dalle interfacce:
+\begin{lstlisting}
+public interface TestMyInterface{
+	public static void main (String args[]){
+	MyInterface.metodoStatico();
+	}
+}
+\end{lstlisting}
+Un'interfaccia contenente metodi statici viola la natura costrattuale delle interfacce. Un'interfaccia simile non ha bisogno di essere implementata perchè i metodi statici di un'interfaccia non vengono ereditati. Interfacce di questo tipo serve solamente per definire funzioni.
+
+\begin{lstlisting}
+public class MyClass implements StaticMethodInterface{}
+
+public class TestMyInterface{
+	MyClass.metodoStatico(); /*errore: canno find symbol
+	perchè il metodo statico non viene ereditato.*/
+
+	StaticMethodInterface.metodoStatico(); /*ok, metodoStatico
+	presente in StaticMethodInterface*/
+}
+\end{lstlisting}
+Si possono creare anche dei metodi statici privati, chiamati solamente dalle interfacce che gli contengono. Agiscono da metodi ausiliari per i metodi statici.
+
+\subsubsection{Metodi di default}
+Un altra novità di Java 8 è la possibilità di dichiarare metodi concreti all'interno delle interfacce grazie alla keyword \textit{default}.
+\begin{lstlisting}
+interface TestInterface { 
+	//square() è implicitamente public ed abstract
+	void square(int a);
+	default public void show(){
+	System.out.print("i-test");
+	} 
+}
+
+class Test implements TestInterface {
+	public void square(int a) 
+	{ ... }
+	public static void main(...) {
+	Test d = new Test();
+	d.square(5); //ok, esegue square
+	d.show();    //stampa: i-test
+	}
+}
+\end{lstlisting}
+In pratica è possibile aggiungere la segnatura \textit{default} davanti alla dichiarazione del metodo e dargli un'implementazione; così facendo tutte le classi che implementano quell'interfaccia avranno a disposizione quel metodo senza doverlo definire per forza.
+
+Notare però che \textit{square(int a)} non è default e quindi, solito, serve definire il contratto nella classe che implementa l'interfaccia.Tuttavia il metodo di default "sparisce" quando viene ridefinito all’interno della classe che lo implementa:
+\begin{lstlisting}
+interface TestInterface { 
+	//square() è implicitamente public ed abstract
+	public void square(int a);
+	default public void show(){
+	System.out.print("i-test");
+	} 
+}
+
+class Test implements TestInterface {
+	public void square(int a) 
+	{ ... }
+
+	public void show(){
+	System.out.print("i-test-over");
+	}
+
+	public static void main(...) {
+	Test d = new Test();
+
+	d.show();    //stampa: i-test-over
+	}
+}
+\end{lstlisting}
+Qui vediamo che è stato fatto l'override di show() (che è comunque un metodo virtuale!) e quindi la classe mostra i-test-over. in output. La regola è che la classe "vince sempre" perché se non appare nulla si usa il metodo default, altrimenti vale l'override.
+
+Può capitare questo:
+\begin{lstlisting}
+interface TestInterface1{
+ 	default public void show(){
+ 	System.out.print("test1");
+ 	} 
+ }
+
+	 interface TestInterface2{ 
+	 default public void show(){
+	 System.out.print("test2");
+ 	} 
+ }
+
+ class Test implements TestInterface1, TestInterface2{
+ 	public void show(){
+ 		TestInterface1.super.show();
+ 		TestInterface2.super.show();
+ 	}
+ }
+
+ public static void main(...){
+ ...
+ d.show(); // stampa: i-test-over
+ }
+\end{lstlisting}
+
+In questo caso c'è il problema che due interfacce diverse danno la stessa definizione del metodo show; il problema nasce perché Test implementa da entrambe le interfacce. Si crea un conflitto dato che Java non sa fra quale dei due scegliere. Per risolvere è necessario fare l'override e specificare cosa fare; in particolare la sintassi \textbf{NomeInterfaccia.super.metodo()} richiama il relativo metodo specificato di default.
+
+La keyword default è stata introdotta per estendere le Collection API, sottoposta a vari cambiamenti, per aggiungere nuove funzionalità fornite da Java 8 quali lambda e Stream API, preservando la compatibilità con le librerie già esistenti.
+\paragraph{Regole per l'utilizzo dei metodi default}
+\begin{enumerate}
+	\item Le classi vincono sulle interfacce. Quindi, se vi è una dichiarazione di un metodo concreto o astratto nelle catena dei sottotipi con la stessa segnatura di un metodo di default, possiamo ignorare le interfacce completamente. Valgono le stesse regole di invocazione dinamica già viste;
+	\item Il figlio (sottotipo) vince sul padre (sovratipo). Se si presenta una situazione nella quale due interfacce forniscono un metodo di default con stessa segnatura e un interfaccia estende l'altra, allora il sottotipo vince.
+	\item No rule3. Se applicate le prime due regole i conflitti non sono stati risolti, la sottoclasse dovrebbe (1) implementare il metodo oppure (2) dichiararlo astratto.
+	\end{enumerate}
