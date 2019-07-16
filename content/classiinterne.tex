@@ -159,3 +159,63 @@ public static void main(...) {
 }
 \end{lstlisting}
 Notare che \textit{Inner i = new Inner(20)} non va bene perché le classi interne possono essere create solo se legate ad istanze di oggetti. Occorre quindi creare prima un oggetto della classe outer (fatto prima con new Outer(10)) e poi usare la sintassi Outer.Inner i = o.new Inner(20).
+
+\subsection{Classi anonime}
+Una classe anonima è una classe \textbf{locale} senza un nome assegnato, si tratta di una classe definita e instanziata un’unica volta attraverso una singola espressione caratterizzata da una versione estesa della sintassi dell’operatore new.
+\begin{figure}[H]
+\centering
+\includegraphics{images/anonime1}
+\caption{Classe anonima\label{fig:UC3}}
+\end{figure}
+La definizione della classe è integrata nell’espressione di return o di dichiarazione di variabile, basta che ci sia l'operatore new. Una classe anonima è una notazione abbreviata per creare un semplice oggetto piccolo "inline" che racchiude del codice da eseguire. Di solito il tipo è una interfaccia.Nell’esempio sopra la classe è castata ad una interface; sarebbe equivalente a:
+\begin{lstlisting}
+class Anonima implements I { ... }; 
+
+return new Anonima();
+\end{lstlisting}
+A differenza delle classi interne, una classe anonima richieda che:
+\begin{itemize}
+	\item al momento della dichiarazione della classe venga istanziato un suo oggetto;
+	\item ci sia l'esistenza di una classe o di una superinterfaccia di cui sfrutterà il costruttore(solo virtualmente nel caso di un'interfaccia). Se una classe non ha nome non può avere un costruttore.
+\end{itemize}
+Se compiliamo una classe che contiene delle classi anonime verrano creati tanti file quante sono le classi anonime.
+\begin{lstlisting}
+public class Outer{
+	private string messaggio = "Nella classe";
+
+	/*Definizione della classe anonima e sua istanza*/
+	ClasseAnonima ca = new ClasseAnonima(){
+		@Override
+		public void metodo(){
+			System.out.println(messaggio + "anonima");
+		}
+	};
+
+	/*superclasse della classe anonima*/
+	public class ClasseAnonima{
+		public void metodo(){
+			System.out.println("Nella classe anonima");
+		}
+	}
+}
+\end{lstlisting}
+La classe anonima dell'esempio usa il reference ca di tipo ClasseAnonima per referenziare un oggetto della sua sottoclasse anonima, e implicitamente come tutte le sottoclassi chiama sempre il costruttore della superclasse.
+
+Una classe anonima viene dichiarata con lo scopo do fare override di uno  più metodi della classe che la estende. Se infatti nell'esempio di prima avessimo definito un nuovo metodo (non ereditato) nella classe anonima, non saremmo stati in grado di invocarlo senza un reference del tipo della classe anonima (che però non può esistere).
+\begin{lstlisting}
+
+
+	/*Definizione della classe anonima e sua istanza*/
+	ClasseAnonima ca = new ClasseAnonima(){
+		@Override
+		public void metodo(){
+			System.out.println(messaggio + "anonima");
+		}
+	};
+
+	public void metodoNonInvocabile(){
+	System.out.println("Per una classe anonima non esistono 
+	reference. Impossibile chiamare questo metodo!");
+	}
+}
+\end{lstlisting}

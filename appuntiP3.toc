@@ -1,0 +1,59 @@
+\babel@toc {italian}{}
+\babel@toc {italian}{}
+\contentsline {section}{\numberline {1}Metodo \textit {Equals()}}{5}{section.1}% 
+\contentsline {subsection}{\numberline {1.1}Propriet\IeC {\`a} del metodo \textit {Equals()}}{5}{subsection.1.1}% 
+\contentsline {subsection}{\numberline {1.2}Corretta implementazione di \textit {Equals()}}{5}{subsection.1.2}% 
+\contentsline {subsection}{\numberline {1.3}Binding dinamico di \textit {Equals()}}{6}{subsection.1.3}% 
+\contentsline {subsection}{\numberline {1.4}Metodo \textit {Equals()} ed eredit\IeC {\`a}}{7}{subsection.1.4}% 
+\contentsline {subsection}{\numberline {1.5}Tipi primitivi vs oggetti}{7}{subsection.1.5}% 
+\contentsline {subsection}{\numberline {1.6}\textit {Equals()} Vs ==}{9}{subsection.1.6}% 
+\contentsline {section}{\numberline {2}Operatore \textit {istanceof}}{10}{section.2}% 
+\contentsline {section}{\numberline {3}Il metodo String \textit {toString()}}{10}{section.3}% 
+\contentsline {subsection}{\numberline {3.1}Costruzione stringhe}{11}{subsection.3.1}% 
+\contentsline {subsection}{\numberline {3.2}Concatenazione stringhe}{11}{subsection.3.2}% 
+\contentsline {section}{\numberline {4}Le classi wrapper}{11}{section.4}% 
+\contentsline {subsection}{\numberline {4.1}Autoboxing - Autounboxing}{12}{subsection.4.1}% 
+\contentsline {subsection}{\numberline {4.2}Cose da evitare}{12}{subsection.4.2}% 
+\contentsline {section}{\numberline {5}Il metodo \textit {Clone()}}{12}{section.5}% 
+\contentsline {subsection}{\numberline {5.1}Clone() con copia profonda}{13}{subsection.5.1}% 
+\contentsline {section}{\numberline {6}La keyword \textit {final}}{14}{section.6}% 
+\contentsline {subsection}{\numberline {6.1}Campi dati final}{14}{subsection.6.1}% 
+\contentsline {subsection}{\numberline {6.2}Metodi \textit {final}}{15}{subsection.6.2}% 
+\contentsline {subsection}{\numberline {6.3}Classi \textit {final}}{16}{subsection.6.3}% 
+\contentsline {section}{\numberline {7}Classe immutabile}{16}{section.7}% 
+\contentsline {subsection}{\numberline {7.1}Regole per creare una classe immutabile}{16}{subsection.7.1}% 
+\contentsline {subsection}{\numberline {7.2}Esempio pratico}{17}{subsection.7.2}% 
+\contentsline {subsection}{\numberline {7.3}Vantaggi}{19}{subsection.7.3}% 
+\contentsline {subsection}{\numberline {7.4}Svantaggi}{20}{subsection.7.4}% 
+\contentsline {subsection}{\numberline {7.5}Differenza tra classe immutabile e oggetto immutabile}{20}{subsection.7.5}% 
+\contentsline {subsection}{\numberline {7.6}Regole per creare oggetti immutabili}{20}{subsection.7.6}% 
+\contentsline {subsection}{\numberline {7.7}Perch\IeC {\`e} la classe \textit {String} \IeC {\`e} immutabile}{21}{subsection.7.7}% 
+\contentsline {section}{\numberline {8}Ereditariet\IeC {\`a} e composizione}{21}{section.8}% 
+\contentsline {section}{\numberline {9}La keyword \textit {abstract}}{23}{section.9}% 
+\contentsline {subsection}{\numberline {9.1}Metodi astratti}{23}{subsection.9.1}% 
+\contentsline {subsection}{\numberline {9.2}Le classi astratte}{23}{subsection.9.2}% 
+\contentsline {subsection}{\numberline {9.3}Cose permesse vs cose non permesse}{24}{subsection.9.3}% 
+\contentsline {section}{\numberline {10}Interfacce}{24}{section.10}% 
+\contentsline {subsection}{\numberline {10.1}Pre Java 8}{24}{subsection.10.1}% 
+\contentsline {subsubsection}{\numberline {10.1.1}La dichiarazione di interfacce}{25}{subsubsection.10.1.1}% 
+\contentsline {subsection}{\numberline {10.2}Post Java 8}{25}{subsection.10.2}% 
+\contentsline {subsubsection}{\numberline {10.2.1}Metodi statici}{25}{subsubsection.10.2.1}% 
+\contentsline {subsubsection}{\numberline {10.2.2}Metodi di default}{26}{subsubsection.10.2.2}% 
+\contentsline {paragraph}{\numberline {10.2.2.1}Regole per l'utilizzo dei metodi default}{27}{paragraph.10.2.2.1}% 
+\contentsline {section}{\numberline {11}Classi interne}{28}{section.11}% 
+\contentsline {subsection}{\numberline {11.1}Classi ed interfacce statiche innestate}{28}{subsection.11.1}% 
+\contentsline {subsection}{\numberline {11.2}Classi innestate non statiche}{29}{subsection.11.2}% 
+\contentsline {subsubsection}{\numberline {11.2.1}Propriet\IeC {\`a}}{29}{subsubsection.11.2.1}% 
+\contentsline {subsubsection}{\numberline {11.2.2}Quando usare le classi innestate}{30}{subsubsection.11.2.2}% 
+\contentsline {subsection}{\numberline {11.3}Classi anonime}{31}{subsection.11.3}% 
+\contentsline {section}{\numberline {12}Dipendenze}{33}{section.12}% 
+\contentsline {subsection}{\numberline {12.1}Dependency Injection}{34}{subsection.12.1}% 
+\contentsline {subsubsection}{\numberline {12.1.1}Constructor Injection}{34}{subsubsection.12.1.1}% 
+\contentsline {subsubsection}{\numberline {12.1.2}Setter Injection}{34}{subsubsection.12.1.2}% 
+\contentsline {subsubsection}{\numberline {12.1.3}Method Injection}{35}{subsubsection.12.1.3}% 
+\contentsline {subsection}{\numberline {12.2}Inversion of control}{35}{subsection.12.2}% 
+\contentsline {section}{\numberline {13}Generics e Collection}{36}{section.13}% 
+\contentsline {subsection}{\numberline {13.1}Classi generiche}{37}{subsection.13.1}% 
+\contentsline {subsection}{\numberline {13.2}Metodi generici}{38}{subsection.13.2}% 
+\contentsline {subsubsection}{\numberline {13.2.1}Prima delle Generics}{39}{subsubsection.13.2.1}% 
+\contentsline {subsection}{\numberline {13.3}Vincoli sui tipi delle variabili e Wildcards}{41}{subsection.13.3}% 
